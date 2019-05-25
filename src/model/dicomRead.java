@@ -17,11 +17,8 @@ import org.dcm4che3.data.Tag;
 import org.dcm4che2.data.*;
 import org.dcm4che2.media.*;
 
-import org.dcm4che2.image.OverlayUtils;
-import org.dcm4che2.tool.dcmqr.DcmQR;
-import com.sun.image.codec.jpeg.JPEGCodec;	 
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-s
+import org.dcm4che2.io.*;
+
 public class dicomRead {
 
 	public dicomRead() {
@@ -45,6 +42,8 @@ public class dicomRead {
 		    
 		    if(overlay != null && overlay.length() > 0) {
 		        bufferImg = OverlayUtils.extractOverlay(obj, Tag.OverlayData, reader, "FFFFFF");
+		        
+		        
 		    }
 			
 		} catch (IOException e) {

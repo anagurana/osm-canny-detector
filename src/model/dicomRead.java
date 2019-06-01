@@ -17,7 +17,7 @@ public class dicomRead {
 		
 	}
 	
-	public static BufferedImage readImage(String path ) {
+	public static BufferedImage readImage (String path ) {
 		BufferedImage myJpegImage=null;
 		File file = new File(path);
 	        Iterator<ImageReader> iterator =ImageIO.getImageReadersByFormatName("DICOM");

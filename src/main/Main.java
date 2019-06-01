@@ -2,26 +2,18 @@ package main;
 
 import java.io.IOException;
 
+
+import controler.Controller;
 import model.dicomRead;
 import ui.Images;
+import ui.Parameters;
 
 public class Main {
 
 	public static void main(String[] args) throws IOException, Exception {
 		
-		
-		var display = new Images();
-		/*
-		dicomRead dcm = new dicomRead();
-		Canny canny = new Canny();
-		//show interface, get the path, get settings
-		var imageOriginal = dcm.readImage("");
-		var processedImage = canny.applyCanny(imageOriginal);
-		
-		//show two images 
-	//	show(imageOriginal, processedImage);*/
-		
-		
+		var parameters = new Parameters();
+				
 	}
 
 }

@@ -5,14 +5,12 @@ import java.util.Arrays;
 
 public class CannyEdgeDetector {
 
-	//statics
+	//constant values 
 	
 	private final static float GAUSSIAN_CUT_OFF = 0.005f;
 	private final static float MAGNITUDE_SCALE = 100F;
 	private final static float MAGNITUDE_LIMIT = 1000F;
 	private final static int MAGNITUDE_MAX = (int) (MAGNITUDE_SCALE * MAGNITUDE_LIMIT);
-	
-	// fields
 	
 	private int height;
 	private int width;
@@ -34,32 +32,16 @@ public class CannyEdgeDetector {
 	private BufferedImage sourceImage;
 	private BufferedImage edgesImage;
 	
-	//constructors 
-	
 	/**
 	 * Constructs a new detector with default parameters.
 	 */
     public CannyEdgeDetector() {
-        this.tresholdDown = 2.5f;
-        this.tresholdUp = 7.5f;
-        this.gaussianKernelRadius = 2f;
-        this.gaussianKernelWidth = 16;
+        this.tresholdDown = 0;
+        this.tresholdUp = 0;
+        this.gaussianKernelRadius = 0;
+        this.gaussianKernelWidth = 0;
         this.contrastNormalized = true;
     }
-    
-	/**
-	 * Constructs a new detector with given parameters.
-	 */
-	public CannyEdgeDetector( float tresholdDown, float tresholdUp, float gaussianKernelRadius,
-			int gaussianKernelWidth, boolean contrastNormalized, BufferedImage sourceImage) {
-		
-		this.tresholdDown =  tresholdDown;
-		this.tresholdUp = tresholdUp;
-		this.gaussianKernelRadius = gaussianKernelRadius;
-		this.gaussianKernelWidth = gaussianKernelWidth;
-		this.contrastNormalized = contrastNormalized;
-		this.sourceImage = sourceImage;
-	}
 
 	public BufferedImage getSourceImage() {
 		return sourceImage;
@@ -117,6 +99,9 @@ public class CannyEdgeDetector {
 		this.contrastNormalized = contrastNormalized;
 	}
 	
+	/**
+	 * The function that process the given image
+	 */
 	public void process() {
 		width = sourceImage.getWidth();
 		height = sourceImage.getHeight();
@@ -132,7 +117,10 @@ public class CannyEdgeDetector {
 		writeEdges(data);
 	}
 	
-	// private utility methods
+	/**
+	 * private utility methods
+	 */
+	
 	private void initArrays() {
 			if (data == null || picsize != data.length) {
 				data = new int[picsize];
@@ -145,9 +133,16 @@ public class CannyEdgeDetector {
 			}
 		}
 	
+	/**
+	 * The function that decide in which direction will be the edges
+	 * @param kernelRadius
+	 * @param kernelWidth
+	 */
 	private void computeGradients(float kernelRadius, int kernelWidth) {
 			
-			//generate the gaussian convolution masks
+			/*
+			 * generate the gaussian convolution masks
+			 */
 			float kernel[] = new float[kernelWidth];
 			float diffKernel[] = new float[kernelWidth];
 			int kwidth;
@@ -165,7 +160,9 @@ public class CannyEdgeDetector {
 			int initY = width * (kwidth - 1);
 			int maxY = width * (height - (kwidth - 1));
 			
-			//perform convolution in x and y directions
+			/*
+			 * perform convolution in x and y directions
+			 */
 			for (int x = initX; x < maxX; x++) {
 				for (int y = initY; y < maxY; y += width) {
 					int index = x + y;
@@ -233,7 +230,9 @@ public class CannyEdgeDetector {
 					float yGrad = yGradient[index];
 					float gradMag = hypot(xGrad, yGrad);
 
-					//perform non-maximal supression
+					/*
+					 * perform non-maximal supression
+					 */
 					float nMag = hypot(xGradient[indexN], yGradient[indexN]);
 					float sMag = hypot(xGradient[indexS], yGradient[indexS]);
 					float wMag = hypot(xGradient[indexW], yGradient[indexW]);
@@ -265,14 +264,24 @@ public class CannyEdgeDetector {
 			}
 		}	
 	
+	
+	/**
+	 * returns the x^2+y^2
+	 */
 	private float hypot(float x, float y) {
 		return (float) Math.hypot(x, y);
 	}
 	
+	/**
+	 * returns the gaussian processed value 
+	 */
 	private float gaussian(float x, float sigma) {
 		return (float) Math.exp(-(x * x) / (2f * sigma * sigma));
 	}
 	
+	/**
+	 * The function that perform the hysteresis
+	 */
 	private void performHysteresis(int low, int high) {
 		Arrays.fill(data, 0);
  
@@ -287,6 +296,9 @@ public class CannyEdgeDetector {
 		}
  	}
 	
+	/**
+	 * The dunction that follows the edges
+	 */
 	private void follow(int x1, int y1, int i1, int threshold) {
 		int x0 = x1 == 0 ? x1 : x1 - 1;
 		int x2 = x1 == width - 1 ? x1 : x1 + 1;
@@ -307,16 +319,25 @@ public class CannyEdgeDetector {
 		}
 	}
 	
+	/**
+	 * The fuction that calculate trashold for the image
+	 */
 	private void thresholdEdges() {
 		for (int i = 0; i < picsize; i++) {
 			data[i] = data[i] > 0 ? -1 : 0xff000000;
 		}
 	}
 	
+	/**
+	 * The function that calculates the luminance
+	 */
 	private int luminance(float r, float g, float b) {
 		return Math.round(0.299f * r + 0.587f * g + 0.114f * b);
 	}
 	
+	/**
+	 * The function that reads the luminance
+	 */
 	private void readLuminance() {
 		int type = sourceImage.getType();
 		if (type == BufferedImage.TYPE_INT_RGB || type == BufferedImage.TYPE_INT_ARGB) {
@@ -352,6 +373,9 @@ public class CannyEdgeDetector {
 		}
 	}
  
+	/**
+	 * The function that normalize contrast 
+	 */
 	private void normalizeContrast() {
 		int[] histogram = new int[256];
 		for (int i = 0; i < data.length; i++) {
@@ -374,6 +398,9 @@ public class CannyEdgeDetector {
 		}
 	}
 	
+	 /**
+	  * The function that writes edges 
+	  */
 	private void writeEdges(int pixels[]) {
 
 		if (edgesImage == null) {

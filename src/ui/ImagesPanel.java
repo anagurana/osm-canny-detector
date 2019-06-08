@@ -1,40 +1,37 @@
 package ui;
 
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-public class Images extends JFrame {
+public class ImagesPanel extends JFrame {
 	
-	private Container  	  panel;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel    	  before;
 	private JPanel    	  after;
 	
 	private GridLayout	layout;
 	
-	public Images(BufferedImage source, BufferedImage edges)  {
+	public ImagesPanel(BufferedImage source, BufferedImage edges)  {
 		try {
 			init(source, edges);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
-
 
 
 	private void init(BufferedImage sourceImage, BufferedImage edgesImage) throws IOException, Exception {
@@ -47,10 +44,10 @@ public class Images extends JFrame {
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
-		this.setBounds(0, 0, (int) (screenSize.width/1.5), (int) (screenSize.height/1.5));
+		this.setBounds(0, 0, (int) (screenSize.width/2), (int) (screenSize.height/2));
 		this.setMinimumSize(new Dimension(screenSize.width/2, screenSize.height/2));
 		
-		this.panel = this.getContentPane();
+		
 		
 		/*
 		 * Panels
@@ -60,28 +57,26 @@ public class Images extends JFrame {
 		this.after = new JPanel();
 		
 		TitledBorder befBorder = new TitledBorder("Before");
-		befBorder.setTitleJustification(befBorder.CENTER);
+		befBorder.setTitleJustification(TitledBorder.CENTER);
 		this.before.setBorder(befBorder);
 		
 		TitledBorder aftBorder = new TitledBorder("After");
-		aftBorder.setTitleJustification(aftBorder.CENTER);
+		aftBorder.setTitleJustification(TitledBorder.CENTER);
 		this.after.setBorder(aftBorder);
-
-		/*var image = ImageIO.read(new File("C:\\Users\\asyag\\Desktop\\study\\donwloads\\1.jpg"));
 		
-		DisplayImage(this.before, resize(image,400,500));
-		DisplayImage(this.after, resize(image,400,500));*/
-		
-		DisplayImage(this.before, resize(sourceImage,400,500));
-		DisplayImage(this.after, resize(edgesImage,400,500));
-		//DisplayImage(this.before, dicomRead.readImage("C:\\Users\\asyag\\Desktop\\study\\OSM\\2 projekt\\SecondProject\\in.dcm") );
+		DisplayImage(this.before, resize(sourceImage,400,450));
+		DisplayImage(this.after, resize(edgesImage,400,450));
 		
 		configureLayout();
 
 		this.setVisible(true);
 		
 	}
-	
+	/**
+	 * Displays the image on specific JPanel
+	 * @param jp JPanel 
+	 * @param img The image that we want to display
+	 */
 	 private void DisplayImage(JPanel jp, BufferedImage img) throws IOException, Exception {
 	        try {
 	            ImageIcon imageicon=new ImageIcon(img);
@@ -94,7 +89,13 @@ public class Images extends JFrame {
 	        }
 	    }
 	
-	 
+	 /**
+	  * Resizing the image
+	  * @param inputImage
+	  * @param scaledWidth
+	  * @param scaledHeight
+	  * @return resized image
+	  */
 
 	public static BufferedImage resize(BufferedImage inputImage, int scaledWidth, int scaledHeight) {
 		 
@@ -109,7 +110,7 @@ public class Images extends JFrame {
 	        return outputImage;
 	
 	    }	
-	/* 
+	/**
 	 * layout : 2 columns 
 	 */
 	private void configureLayout() {

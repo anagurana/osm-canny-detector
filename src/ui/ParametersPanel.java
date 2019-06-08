@@ -20,6 +20,11 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import controler.Controller;
 import controler.Controller.UiActionListener;
 
+/**
+ * 
+ * The frame that represents changing parameters in Canny Edge Detector
+ *
+ */
 public class ParametersPanel extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
@@ -45,8 +50,8 @@ public class ParametersPanel extends JFrame{
 	private JTextField textKW;
 	
 	private GridLayout layout;
-
-	ActionListener uiListener;
+	
+	public ActionListener uiListener;
 	
 	public ParametersPanel() throws HeadlessException {
 
@@ -67,6 +72,7 @@ public class ParametersPanel extends JFrame{
 		this.setBounds(0, 0, (int) (screenSize.width/3), (int) (screenSize.height/3));
 		this.setMinimumSize(new Dimension(screenSize.width/3, screenSize.height/3));
 		
+		this.setLocation(getWidth()/3, getHeight());
 		
 		/* 
 		 * Labels 
@@ -85,8 +91,8 @@ public class ParametersPanel extends JFrame{
 		this.textKR = new JTextField("2.000");
 		this.textKW = new JTextField("16");
 		
-		this.valueTD = new JSlider(0, 10000, 2500);
-		this.valueTU = new JSlider(0, 20000, 7500);
+		this.valueTD = new JSlider(10, 10000, 2500);
+		this.valueTU = new JSlider(10, 20000, 7500);
 		this.valueKR = new JSlider(1000, 17000, 2000);
 		this.valueKW = new JSlider(2, 42, 16);
 
@@ -126,7 +132,7 @@ public class ParametersPanel extends JFrame{
 		
 		valueTD.setPaintLabels(true);
 		Hashtable<Integer, JLabel> positionTD = new Hashtable<Integer, JLabel>();
-		positionTD.put(0, new JLabel("0"));
+		positionTD.put(10, new JLabel("0"));
 		positionTD.put(2000, new JLabel("2"));
 		positionTD.put(4000, new JLabel("4"));
 		positionTD.put(6000, new JLabel("6"));
@@ -136,7 +142,7 @@ public class ParametersPanel extends JFrame{
 		
 		valueTU.setPaintLabels(true);
 		Hashtable<Integer, JLabel> positionTU = new Hashtable<Integer, JLabel>();
-		positionTU.put(0, new JLabel("0"));
+		positionTU.put(10, new JLabel("0"));
 		positionTU.put(4000, new JLabel("4"));
 		positionTU.put(8000, new JLabel("8"));
 		positionTU.put(12000, new JLabel("12"));
@@ -172,10 +178,9 @@ public class ParametersPanel extends JFrame{
 		this.apply.setEnabled(false);
 		this.open = new JButton("Open");
 		
-		this.apply.setBounds(100, 100, 140, 40);
-		this.open.setBounds(100, 100, 140, 40);
-		
-		
+		/*
+		 * Adding event codes to buttons
+		 */
 		this.apply.setActionCommand(Controller.UiActionListener.APPLY_VALUES);
 		this.open.setActionCommand(Controller.UiActionListener.OPEN_FILE);
 		this.contrastNormalized.setActionCommand(Controller.UiActionListener.CONTRAST_CHECKED);

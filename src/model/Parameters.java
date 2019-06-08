@@ -1,5 +1,10 @@
 package model;
 
+/**
+ * 
+ * The class that represents the set of parameters for Canny Edge Detector 
+ *
+ */
 public class Parameters {
 	
 	private float tresholdDown;
@@ -9,8 +14,6 @@ public class Parameters {
 	private boolean contrastNormalized; 
 	
 	private String path;
-
-	
 
 	/**
 	 * Constructor with default parameters

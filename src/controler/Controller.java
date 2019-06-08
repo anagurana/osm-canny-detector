@@ -14,6 +14,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.CannyEdgeDetector;
+import model.DisplayImages;
 import model.Parameters;
 import ui.ImagesPanel;
 import ui.ParametersPanel;
@@ -39,7 +40,7 @@ public class Controller {
 	private ParametersPanel parametersView;
 	private Parameters parameterValues;
 	
-	UiActionListener uiListener;
+	public UiActionListener uiListener;
 	
 
 	public Controller(ParametersPanel parametersView, Parameters parameterValues) {
@@ -51,15 +52,15 @@ public class Controller {
 		this.parametersView.setUiListener(this.uiListener);
 	
 		/*
-		 * Showing the slider value and applying the values to Parameters 
+		 * Showing the sliders values and applying them to Parameters 
 		 */
 		
 		parametersView.valueTD.addChangeListener(new ChangeListener() {
 	         public void stateChanged(ChangeEvent ce) {
 	        	 parametersView.setTextTD("" + parametersView.getValueTD()); 
 	        	 parameterValues.setTresholdDown(parametersView.getValueTD());
-		        	
-		       	 if(parametersView.getValueTU()<parametersView.getValueTD())
+	        	 
+	        	 if (parametersView.getValueTU()<parametersView.getValueTD())
 		        	 parametersView.valueTD.setValue((int)(parametersView.getValueTU()*1000));
 	         }
 	      });
@@ -125,11 +126,16 @@ public class Controller {
 		}
 
 		/**
-		 * Opening the file after clicking on OPEN_BUTTON
+		 * Opening the file after clicking on OPEN button
 		 */
 		void openFile() {
+			
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setDialogTitle("Open");
+			
+			/*
+			 * Limiting only to DICOM format
+			 */
 			FileNameExtensionFilter dicomFilter = new FileNameExtensionFilter("DICOM Files", "dcm");
 			fileChooser.setFileFilter(dicomFilter);
 			int result = fileChooser.showOpenDialog(null);	
@@ -137,6 +143,10 @@ public class Controller {
 			parametersView.setPath(fileChooser.getSelectedFile().getAbsolutePath());
 			parameterValues.setPath(fileChooser.getSelectedFile().getAbsolutePath());
 			parametersView.apply.setEnabled(true);
+			
+			this.images =  new ImagesPanel();
+			this.images.setVisible(false);
+			
 			} else if (result == JFileChooser.CANCEL_OPTION) {}
 			else {
 				JOptionPane.showMessageDialog(Controller.this.parametersView, "Niepoprawny format");
@@ -144,7 +154,7 @@ public class Controller {
 		}
 
 		/**
-		 * Applying the parameters and showing the result after clicking on APPLY_BUTTON
+		 * Applying the parameters and showing the result after clicking on APPLY button
 		 */
 		void applyValues() {
 			
@@ -177,15 +187,18 @@ public class Controller {
 			 filter.process();
 			 BufferedImage edges = filter.getEdgesImage();
 			 
-			 try {
-				 
-				this.images =  new ImagesPanel(source,edges);
-			} catch (Exception e) {
-				e.printStackTrace();
-				}
+			 /*
+			  * Displaying the images
+			  */
+			 new DisplayImages();
+			 this.images.setSourceImg(DisplayImages.DisplayImage(source));
+			 this.images.setEdgesImg(DisplayImages.DisplayImage(edges));
+			 this.images.setVisible(true);
 			 }
+
 		
 		void contrastCheckes() {
 			parameterValues.setContrastNormalized(parametersView.getContrastNormalized().isSelected());
-		}	
+		}
+		
 }

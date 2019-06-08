@@ -3,6 +3,11 @@ package model;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
+/**
+ * 
+ * The class that represents the Canny Edge Detector
+ *
+ */
 public class CannyEdgeDetector {
 
 	//constant values 
@@ -59,32 +64,16 @@ public class CannyEdgeDetector {
 		this.edgesImage = edgesImage;
 	}
 
-	public float getTresholdDown() {
-		return tresholdDown;
-	}
-
 	public void setTresholdDown(float tresholdDown) {
 		this.tresholdDown = tresholdDown;
-	}
-
-	public float getTresholdUp() {
-		return tresholdUp;
 	}
 
 	public void setTresholdUp(float tresholdUp) {
 		this.tresholdUp = tresholdUp;
 	}
 
-	public float getGaussianKernelRadius() {
-		return gaussianKernelRadius;
-	}
-
 	public void setGaussianKernelRadius(float gaussianKernelRadius) {
 		this.gaussianKernelRadius = gaussianKernelRadius;
-	}
-
-	public float getGaussianKernelWidth() {
-		return gaussianKernelWidth;
 	}
 
 	public void setGaussianKernelWidth(int gaussianKernelWidth) {

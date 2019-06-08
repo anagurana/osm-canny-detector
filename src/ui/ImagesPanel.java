@@ -1,40 +1,38 @@
 package ui;
 
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+/**
+ * 
+ * The frame that shows 2 images aside
+ *
+ */
 public class ImagesPanel extends JFrame {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private JPanel    	  before;
-	private JPanel    	  after;
+	private JPanel    	before;
+	private JPanel    	after;
+	private JLabel 		sourceImg;
+	private JLabel 		edgesImg;
 	
 	private GridLayout	layout;
 	
-	public ImagesPanel(BufferedImage source, BufferedImage edges)  {
-		try {
-			init(source, edges);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public ImagesPanel()  {
+		 
+			init();
 	}
 
-
-	private void init(BufferedImage sourceImage, BufferedImage edgesImage) throws IOException, Exception {
+	/**
+	 * Initialization of Images Frame
+	 */
+	private void init()  {
 		/* 
 		 * Frame configuration
 		 */
@@ -47,7 +45,7 @@ public class ImagesPanel extends JFrame {
 		this.setBounds(0, 0, (int) (screenSize.width/2), (int) (screenSize.height/2));
 		this.setMinimumSize(new Dimension(screenSize.width/2, screenSize.height/2));
 		
-		
+		this.setLocation(getWidth(), getHeight()/2);
 		
 		/*
 		 * Panels
@@ -64,54 +62,35 @@ public class ImagesPanel extends JFrame {
 		aftBorder.setTitleJustification(TitledBorder.CENTER);
 		this.after.setBorder(aftBorder);
 		
-		DisplayImage(this.before, resize(sourceImage,400,450));
-		DisplayImage(this.after, resize(edgesImage,400,450));
-		
 		configureLayout();
 
 		this.setVisible(true);
 		
 	}
-	/**
-	 * Displays the image on specific JPanel
-	 * @param jp JPanel 
-	 * @param img The image that we want to display
-	 */
-	 private void DisplayImage(JPanel jp, BufferedImage img) throws IOException, Exception {
-	        try {
-	            ImageIcon imageicon=new ImageIcon(img);
-	            
-	            JLabel label=new JLabel(imageicon);
-	            label.setBounds(0, 0, 100, 100);
-	            jp.add(label);
-	        } catch (Exception ex) {
-	            throw new Exception();
-	        }
-	    }
-	
-	 /**
-	  * Resizing the image
-	  * @param inputImage
-	  * @param scaledWidth
-	  * @param scaledHeight
-	  * @return resized image
-	  */
 
-	public static BufferedImage resize(BufferedImage inputImage, int scaledWidth, int scaledHeight) {
-		 
-	        // creates output image
-	        BufferedImage outputImage = new BufferedImage(scaledWidth, scaledHeight, inputImage.getType());
-	        outputImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
-	 
-	        // scales the input image to the output image
-	        Graphics2D g2d = outputImage.createGraphics();
-	        g2d.drawImage(inputImage, 0, 0, scaledWidth, scaledHeight, null);
-	        g2d.dispose();
-	        return outputImage;
-	
-	    }	
 	/**
-	 * layout : 2 columns 
+	 * Adding source image to panel
+	 * @param sourceImg Label from DisplayImages
+	 */
+	public void setSourceImg(JLabel sourceImg) {
+		this.sourceImg = sourceImg;
+		this.before.removeAll();
+		this.before.add(this.sourceImg);
+	}
+
+
+	/**
+	 * Adding edges image to panel
+	 * @param edgesImg Label from DisplayImage
+	 */
+	public void setEdgesImg(JLabel edgesImg) {
+		this.edgesImg = edgesImg;
+		this.after.removeAll();
+		this.after.add(this.edgesImg);
+	}
+
+	/**
+	 * Layout : 2 columns 
 	 */
 	private void configureLayout() {
 		
